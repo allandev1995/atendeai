@@ -126,14 +126,7 @@ A resposta contém:
 
 ### Documentação visual do fluxo
 
-As capturas de tela do projeto serão organizadas na pasta `docs/evidencias/`.
-
-Serão documentados:
-
-1. Fluxo completo do n8n.
-2. Execução bem-sucedida.
-3. Configurações dos nodes.
-4. Resultados recebidos e processados.
+As evidências do projeto estão disponíveis na pasta `docs/evidencias/`, incluindo o fluxo completo, as execuções, o resultado da classificação e as configurações individuais dos nodes do n8n.
 
 ### Workflow n8n
 
