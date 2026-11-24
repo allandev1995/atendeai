@@ -127,6 +127,68 @@ A resposta contém:
 ### Documentação visual do fluxo
 
 As evidências do projeto estão disponíveis na pasta `docs/evidencias/`, incluindo o fluxo completo, as execuções, o resultado da classificação e as configurações individuais dos nodes do n8n.
+Resposta JSON contendo categoria, assunto,
+prioridade, departamento e resumo.
+
+### 1. Fluxo completo
+![Fluxo completo](docs/evidencias/01-fluxo-completo.png)
+
+Visão geral da automação, desde o recebimento
+da mensagem até o direcionamento por departamento.
+
+### 2. Execução em produção
+![Execução](docs/evidencias/02-execucao-producao.png)
+
+Demonstração de uma execução concluída com sucesso.
+
+### 3. Resultado da classificação
+![Resultado](docs/evidencias/03-resultado-classificacao.png)
+
+### 4. Configuração do Webhook
+
+![Configuração do Webhook](docs/evidencias/configuracao-webhook.png)
+
+Configuração do ponto de entrada responsável por receber as mensagens.
+
+### 5. Configuração do HTTP Request
+
+![HTTP Request](docs/evidencias/Configuracao-httprequest.png)
+
+Integração entre o n8n e a API responsável pela classificação.
+
+### 6. Configuração do Switch
+
+![Switch](docs/evidencias/configuracao-switch.png)
+
+Regras de direcionamento automático conforme o departamento identificado.
+
+### 7. Histórico de execuções
+
+![Execuções](docs/evidencias/executions.png)
+
+Histórico das execuções realizadas pelo workflow.
+
+### 8. Encaminhamento por departamento
+
+**Logística**
+
+![Logística](docs/evidencias/node-encaminhar-logistica.png)
+
+**Financeiro**
+
+![Financeiro](docs/evidencias/node-encaminhar-financeiro.png)
+
+**Atendimento**
+
+![Atendimento](docs/evidencias/node-encaminhar-atendimento.png)
+
+**Suporte**
+
+![Suporte](docs/evidencias/node-encaminhar-suporte.png)
+
+**Comercial**
+
+![Comercial](docs/evidencias/node-encaminhar-comercial.png)
 
 ### Workflow n8n
 
