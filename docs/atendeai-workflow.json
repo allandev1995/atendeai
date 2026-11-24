@@ -1,0 +1,447 @@
+{
+  "name": "AtendeAI — Classificação Automática de Mensagens",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atendeai-messages",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f060039e-e280-45b6-b044-f3a6a2b0dbbf",
+      "name": "Webhook",
+      "webhookId": "2f0974c0-202f-413a-9249-e928c36935e1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3000/api/messages",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "customerName",
+              "value": "={{ $json.body.customerName }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.body.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "bd89d494-83d2-438d-b343-2ff7a7a5c88f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data.classification.department }}",
+                    "rightValue": "logistica",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1b6d90d8-91e9-4e45-889a-d193df0a96f0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Logística"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "59d1c276-f6e9-4b69-b666-3a0c210f619b",
+                    "leftValue": "={{ $json.data.classification.department }}",
+                    "rightValue": "financeiro",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Financeiro"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "15a92715-747a-462a-946a-7f40f3791d58",
+                    "leftValue": "={{ $json.data.classification.department }}",
+                    "rightValue": "atendimento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Atendimento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "9310e862-20dd-4f6b-a87f-83794b55b425",
+                    "leftValue": "={{ $json.data.classification.department }}",
+                    "rightValue": "suporte",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Suporte"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "5a0db770-9671-4e3e-adc1-8de78f074e93",
+                    "leftValue": "={{ $json.data.classification.department }}",
+                    "rightValue": "comercial",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Comercial"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "f67ece37-7b93-42b9-949d-09c126423511",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "45419e7e-166a-483f-8d76-e0242bc87dcb",
+              "name": "routedDepartment",
+              "value": "Logística",
+              "type": "string"
+            },
+            {
+              "id": "5ac6b812-9415-47a3-914c-56284fbc7eb4",
+              "name": "routingStatus",
+              "value": "encaminhado",
+              "type": "string"
+            },
+            {
+              "id": "53d8ffa0-69c8-44c7-8b3b-2f2eb1afddaa",
+              "name": "routingMessage",
+              "value": "Mensagem direcionada ao setor de Logística.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        -192
+      ],
+      "id": "9791bc86-a8be-46a3-a0ef-a10bb2cdbb6a",
+      "name": "Encaminhar - Logística"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b8b4de1a-0a0f-41f6-932a-14957cdb1092",
+              "name": "routedDepartment",
+              "value": "Financeiro",
+              "type": "string"
+            },
+            {
+              "id": "020a2acf-d1cd-4673-b237-10dc72122464",
+              "name": "routingStatus",
+              "value": "encaminhado",
+              "type": "string"
+            },
+            {
+              "id": "aef2c12c-312e-4868-a762-4ed18eccef65",
+              "name": "routingMessage",
+              "value": "Mensagem direcionada ao setor Financeiro.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        800,
+        -64
+      ],
+      "id": "8f41e8d8-eb8f-493d-bc8d-733717e8329c",
+      "name": "Encaminhar - Financeiro"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eb93bfed-2307-4fd2-bbce-9a5f8ade05dd",
+              "name": "routedDepartment",
+              "value": "Atendimento",
+              "type": "string"
+            },
+            {
+              "id": "edc0a0e8-15e0-4786-9c7a-b851891d8bca",
+              "name": "routingStatus",
+              "value": "encaminhado",
+              "type": "string"
+            },
+            {
+              "id": "734fb73a-061f-42b2-bd92-808cae62733d",
+              "name": "routingMessage",
+              "value": "Mensagem direcionada ao setor de Atendimento.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        960,
+        48
+      ],
+      "id": "756e1a9d-2497-4e1f-8c2a-7aeefacbfe17",
+      "name": "Encaminhar - Atendimento"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9ce8e75c-42ee-4a7e-be38-8b9891e8faed",
+              "name": "routedDepartment",
+              "value": "Suporte",
+              "type": "string"
+            },
+            {
+              "id": "561bddea-b590-4dda-b6a9-8da9f4a80215",
+              "name": "routingStatus",
+              "value": "encaminhado",
+              "type": "string"
+            },
+            {
+              "id": "eebf781c-719d-4d11-a845-063740054053",
+              "name": "routingMessage",
+              "value": "Mensagem direcionada ao setor de Suporte.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1088,
+        176
+      ],
+      "id": "9e7b7369-e717-4a6d-bc91-e00b2437b663",
+      "name": "Encaminhar - Suporte"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "627e0cf4-9cf6-4c5c-ac0f-f3fe61a1dcb0",
+              "name": "routedDepartment",
+              "value": "Comercial",
+              "type": "string"
+            },
+            {
+              "id": "32868b44-659d-4997-b48c-cb72a780756e",
+              "name": "routingStatus",
+              "value": "encaminhado",
+              "type": "string"
+            },
+            {
+              "id": "a7685454-ed36-445f-a218-b8ecbff43638",
+              "name": "routingMessage",
+              "value": "Mensagem direcionada ao setor Comercial.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        928,
+        288
+      ],
+      "id": "abdb1a5f-32b7-4d7e-9e24-9a21e965deed",
+      "name": "Encaminhar - Comercial"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Encaminhar - Logística",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Encaminhar - Financeiro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Encaminhar - Atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Encaminhar - Suporte",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Encaminhar - Comercial",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b3014240-0b94-4650-a3f5-521d22ee8bcf",
+  "meta": {
+    "instanceId": "8ca98f72f14360c4da44805950017e1a82ef372d281abffec92ddd80bd911a34"
+  },
+  "nodeGroups": [],
+  "id": "mMiAlgXrHngRyZ0S",
+  "tags": []
+}
